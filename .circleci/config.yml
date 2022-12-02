@@ -5,8 +5,7 @@ workflows:
   build:
     jobs:
       - cypress/run:
-      yarn: true
-      store_artifact: true
+          store_artifacts: true
 
 
 
