@@ -5,8 +5,15 @@ workflows:
   build:
     jobs:
       - cypress/run:
-          store_artifacts: true
+             start: npm start        # start server      
+          #store_artifacts: true
          # record: true
+
+# store test reports -->>
+        #  post-steps:
+        #     - store_test_results:
+        #         path: cypress/results
+
 
 
 
