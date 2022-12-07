@@ -5,7 +5,7 @@ import PageLocators from "../Locators/addToCartLocators";
 let assertObj = new AssertionMethods();         //obj for class
 let locatorObj = new PageLocators();
 
-describe.only("Validating product is added to cart", () => {
+describe("Validating product is added to cart", () => {
 
     beforeEach(() => {
         assertObj.launchBrowser('http://practice.automationtesting.in/')
@@ -26,9 +26,10 @@ describe.only("Validating product is added to cart", () => {
         assertObj.verifyLength(locatorObj.newArrival, 3)
     })
 
-    it("TC-03 : Verify the only in-stock products can be added to cart ", () => {
-        cy.get(locatorObj.newArrel).each((el, index) => {
+    it.skip("TC-03 : Verify the only in-stock products can be added to cart ", () => {
+        cy.get(locatorObj.newArrivalEl).each((el, index) => {
             cy.get(locatorObj.newArrivalEl).eq(index).click({ force: true })
+            //cy.go(-1)  
             cy.get(locatorObj.paraText).then(el => {
                 let paragraphText = el.text()
                 cy.log(paragraphText)
@@ -55,14 +56,14 @@ describe("Validating billing of product in cart", () => {
     it("TC-04 : Verify book name and product price for billing purpose", () => {
     
         assertObj.launchBrowser("http://practice.automationtesting.in/")
-        cy.get(locatorObj.newArrel).each((el, i) => {
-            cy.get(locatorObj.newArrel).eq(i).click({ force: true })
+        cy.get(locatorObj.newArrivalEl).each((el, i) => {
+            cy.get(locatorObj.newArrivalEl).eq(i).click({ force: true })
             cy.get(locatorObj.paraText).then(el => {
                 let paragraphText = el.text()
                 cy.log(paragraphText)
 
                 if (paragraphText.includes("in stock")) {
-                    cy.get(locatorObj.addtoCartBtn).click()
+                    cy.get(locatorObj.addtoCartBtn).click({force:true})
                     cy.get(locatorObj.bookName).then(el => {
                         book3Name = el.text();
                         cy.log(book3Name)

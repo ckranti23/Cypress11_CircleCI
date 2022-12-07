@@ -1,23 +1,25 @@
 import AssertionMethods from "../Utility/assertions";
 import utilities from "../Utility/utilities";
+import Product from "../Locators/billingProduct"
 
 let assertObj = new AssertionMethods();
+let locatorObj = new Product();
 
 describe("Validate sub total of the product in the cart", () => {
     beforeEach(() => {
         assertObj.launchBrowser('http://practice.automationtesting.in/')
     })
 
-    it("verify Three sliders bar only of homepage", () => {
-        cy.fixture('billingProduct').then((locator) => {
-            assertObj.verifyLength(locator.one, 3)
-            assertObj.verifyLength(locator.catalogImage, 3)
-        })
+    it("TC-01 : Verify home page book sliders length ", () => {
+        assertObj.clickOnElement(locatorObj.menu, 0)
+        assertObj.clickOnElement(locatorObj.shopMenuItem, 0)
+        assertObj.clickOnElement(locatorObj.homeSubLink, 0)
+        assertObj.verifyLength(locatorObj.bookSlider, 3)
     })
 
     var bookName = ""
     var bookPrice = ""
-    it('verify the only in-stock products can be added to cart', () => {
+    it.skip('verify the only in-stock products can be added to cart', () => {
         cy.fixture('billingProduct').then((locator) => {
             cy.get(locator.arrivals).each((el, index) => {
                 cy.get(locator.arrivals).eq(index).click({ force: true })
