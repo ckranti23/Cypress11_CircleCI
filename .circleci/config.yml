@@ -1,21 +1,103 @@
 version: 2.1
 orbs:
   cypress: cypress-io/cypress@1
+  slack: circleci/slack@4.10.1
+
+jobs:
+  run-tests:
+    circleci_ip_ranges: true
+    docker:
+      - image: cypress/base:14.16.0
+    working_directory: ~/Cypress11_CircleCI
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-deps-{{ checksum "package-lock.json" }}
+      - run:
+          name: install
+          command: npm ci
+      - run:
+          name: delete old reports
+          command: rm -r ./mochawesome-report || true
+      - run:
+          name: delete old final reports
+          command: rm -r ./final-report || true 
+      - run:
+          name: Run tests #TODO: In the future I need to separate
+          command: npx cypress run --reporter mochawesome
+      - run:
+          name: Create final report folder
+          command: mkdir final-report || true
+          when: always
+      - run:
+          name: Merge reports
+          command: npx mochawesome-merge ./mochawesome-report/*.json -o ./final-report/output.json
+          when: always
+      - run:
+          name: Generate HTML
+          command: npx marge ./final-report/output.json
+          when: always
+      - store_artifacts:
+          path: mochawesome-report
+      - slack/notify:
+          event: fail
+          mentions: '@chavankranti23'
+          template: basic_fail_1
+          branch_pattern: main
+      - slack/notify:
+          event: pass
+          template: success_tagged_deploy_1
+          branch_pattern: main
 workflows:
   build:
     jobs:
-      - cypress/run:
-             yarn : true    
-             store_artifacts: true
-           # record: true
+      - run-tests
 
-        #  executor: cypress/base-14
-        #  start: npm start        # start server  
 
-# store test reports -->>
-        #  post-steps:
-        #     - store_test_results:
-        #         path: cypress/results
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# version: 2.1
+# orbs:
+#   cypress: cypress-io/cypress@1
+#   slack: circleci/slack@4.10.1
+
+# workflows:
+#   build:
+#     jobs:
+#       - cypress/run:
+#              yarn : true    
+#              store_artifacts: true
+#            # record: true
+#       - run-tests
+#         #  executor: cypress/base-14
+#         #  start: npm start        # start server  
+
+# # store test reports -->>
+#         #  post-steps:
+#         #     - store_test_results:
+#         #         path: cypress/results
 
 
 
