@@ -56,10 +56,11 @@ jobs:
 workflows:
   build:
     jobs:
+    - run-tests
       - cypress/run:
              yarn : true    
              store_artifacts: true
-             - run-tests
+      
 #            # record: true
 #         #  executor: cypress/base-14
 #         #  start: npm start        # start server  
