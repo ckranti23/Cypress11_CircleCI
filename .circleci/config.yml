@@ -40,57 +40,27 @@ jobs:
           when: always
       - store_artifacts:
           path: mochawesome-report
-      - slack/notify:
-          event: fail
-          mentions: '@chavankranti23'
-          template: basic_fail_1
-          branch_pattern: main
+      # - slack/notify:
+      #     event: fail
+      #     mentions: '@chavankranti23'
+      #     template: basic_fail_1
+      #     branch_pattern: main
       - slack/notify:
           event: pass
           template: success_tagged_deploy_1
           branch_pattern: main
-workflows:
-  build:
-    jobs:
-      - run-tests
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# version: 2.1
-# orbs:
-#   cypress: cypress-io/cypress@1
-#   slack: circleci/slack@4.10.1
-
 # workflows:
 #   build:
 #     jobs:
-#       - cypress/run:
-#              yarn : true    
-#              store_artifacts: true
-#            # record: true
 #       - run-tests
+workflows:
+  build:
+    jobs:
+      - cypress/run:
+             yarn : true    
+             store_artifacts: true
+             - run-tests
+#            # record: true
 #         #  executor: cypress/base-14
 #         #  start: npm start        # start server  
 
