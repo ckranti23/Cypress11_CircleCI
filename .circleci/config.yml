@@ -49,17 +49,17 @@ jobs:
           event: pass
           template: success_tagged_deploy_1
           branch_pattern: main
-# workflows:
-#   build:
-#     jobs:
-#       - run-tests
 workflows:
   build:
     jobs:
-    - run-tests
-      - cypress/run:
-             yarn : true    
-             store_artifacts: true
+      - run-tests
+
+# workflows:
+#   build:
+#     jobs:
+#       - cypress/run:
+#              yarn : true    
+#              store_artifacts: true
       
 #            # record: true
 #         #  executor: cypress/base-14
